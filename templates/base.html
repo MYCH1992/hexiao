@@ -1,0 +1,63 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>文化中心电影院</title>
+    <meta name="description" content="这是一个 index 页面">
+    <meta name="keywords" content="index">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+    <link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.2/css/amazeui.min.css">
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+
+    {% block style %}
+    {% endblock %}
+
+</head>
+<body>
+
+<header class="am-topbar am-topbar-inverse admin-header">
+    <div class="am-topbar-brand">
+        <small><a href="index">电影院核销系统</a></small>
+    </div>
+</header>
+
+<div class="am-cf admin-main">
+    <!-- sidebar start -->
+    <div class="admin-sidebar am-offcanvas" id="admin-offcanvas">
+        <div class="am-offcanvas-bar admin-offcanvas-bar">
+            <ul class="am-list admin-sidebar-list">
+                <li><a href="/hexiao/index"><span class="am-icon-home"></span> 首页</a></li>
+                <li><a href="/hexiao/verify?code=&pIndex=1"><span class="am-icon-hand-peace-o"></span> 核销</a></li>
+                <li><a href="/hexiao/query?pIndex=1"><span class="am-icon-search-plus"></span> 查询</a></li>
+                <li><a href="/hexiao/add"><span class="am-icon-plus"></span> 添加</a></li>
+            </ul>
+
+            <div class="am-panel am-panel-default admin-sidebar-panel">
+                <div class="am-panel-bd">
+                    <p><span class="am-icon-bookmark"></span> 公告</p>
+                    <p>使用有疑问请与我联系：18334018121—— Mych</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- sidebar end -->
+
+    <!-- content start -->
+    {% block content %}
+    {% endblock %}
+    <!-- content end -->
+</div>
+
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="http://cdn.amazeui.org/amazeui/2.7.2/js/amazeui.min.js"></script>
+
+{% block script %}
+{% endblock %}
+
+</body>
+</html>

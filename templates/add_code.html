@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="admin-content">
+        <div class="admin-content-body">
+            <div class="am-cf am-padding am-padding-bottom-0">
+                <div class="am-fl am-cf">
+                    <strong class="am-text-primary am-text-lg">添加</strong> /
+                    <small>add_code</small>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="am-tabs am-margin" data-am-tabs>
+                <ul class="am-tabs-nav am-nav am-nav-tabs">
+                    <li class="am-active"><a href="#tab1">批量生成</a></li>
+                </ul>
+
+                <div class="am-tabs-bd">
+
+                    <div class="am-tab-panel am-fade am-in am-active" id="tab1">
+                        <form class="am-form">
+                            <div class="am-g am-margin-top">
+                                <div class="am-u-sm-4 am-u-md-2 am-text-right">
+                                    核销码数量
+                                </div>
+                                <div class="am-u-sm-8 am-u-md-4">
+                                    <input type="number" class="am-input-sm">
+                                </div>
+                                <div class="am-hide-sm-only am-u-md-6"></div>
+                            </div>
+
+                            <div class="am-g am-margin-top-sm">
+                                <div class="am-u-sm-12 am-u-md-2 am-text-right admin-form-text">
+                                    内容描述
+                                </div>
+                                <div class="am-u-sm-12 am-u-md-10">
+                                    <textarea rows="10" placeholder="请输入该核销码的详细信息！"></textarea>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="am-margin">
+                            <button onclick="add()" type="button" class="am-btn am-btn-primary am-btn-xs">确定添加</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!--进度提示-->
+    <div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">提示</div>
+            <div class="am-modal-bd">
+                正在生成中。。。请耐心等待。。。
+            </div>
+        </div>
+    </div>
+
+    <div class="am-modal am-modal-alert" tabindex="-1" id="my-alert1">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">提示</div>
+            <div class="am-modal-bd">
+                信息不能为空！
+            </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn">确定</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="am-modal am-modal-alert" tabindex="-1" id="my-alert2">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">提示</div>
+            <div class="am-modal-bd">
+                生成成功！
+            </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn">确定</span>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        function add() {
+            var number = $('input').val()
+            var description = $('textarea').val()
+            if (!number || !description) {
+                $('#my-alert1').modal()
+            } else {
+                $('#my-alert').modal()
+                $.getJSON(
+                    '/hexiao/add_code',
+                    {'number': number, 'description': description},
+                    function (data) {
+                        if (data.status == 'ok') {
+                            $('#my-alert').modal('close')
+                            $('#my-alert2').modal()
+                        }
+                    }
+                )
+            }
+        }
+    </script>
+{% endblock %}

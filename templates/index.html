@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="admin-content">
+        <div class="admin-content-body">
+            <div class="am-cf am-padding">
+                <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">首页</strong> /
+                    <small>一些常用模块</small>
+                </div>
+            </div>
+
+            <ul class="am-avg-sm-1 am-avg-md-3 am-margin am-padding am-text-center admin-content-list ">
+                <li><a href="/hexiao/query?pIndex=1" class="am-text-success"><span
+                        class="am-icon-btn am-icon-th"></span><br/>核销码总数<br/>{{ allCodeNumber }}</a></li>
+                <li><a href="/hexiao/query?pIndex=1&codeStatus=未核销" class="am-text-secondary"><span
+                        class="am-icon-btn am-icon-circle"></span><br/>未核销数量<br/>{{ noCodeNumber }}</a></li>
+                <li><a href="/hexiao/query?pIndex=1&codeStatus=已核销" class="am-text-warning"><span class="am-icon-btn am-icon-check-circle"></span><br/>已核销数量<br/>{{ yesCodeNumber }}
+                </a>
+                </li>
+            </ul>
+        </div>
+    
+    </div>
+{% endblock %}

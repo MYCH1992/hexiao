@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load filter %}
+
+{% block content %}
+
+    <div class="admin-content">
+        <div class="admin-content-body">
+            <div class="am-cf am-padding">
+                <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">查询</strong> /
+                    <small>query</small>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="am-g">
+                <div class="am-u-sm-12 am-u-md-6">
+                    <div class="am-btn-toolbar">
+                        <div class="am-btn-group am-btn-group-xs">
+                            <a href="/hexiao/add" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 新增
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="am-u-sm-12 am-u-md-3">
+                    <div class="am-form-group">
+                        <select data-am-selected="{btnSize: 'sm'}">
+                            <option value="全部" {% if status == 0 %}
+                                    selected="selected"
+                            {% endif %}>全部
+                            </option>
+                            <option value="未核销"  {% if status == 2 %}
+                                    selected="selected"
+                            {% endif %}>未核销
+                            </option>
+                            <option value="已核销"  {% if status == 1 %}
+                                    selected="selected"
+                            {% endif %}>已核销
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="am-g">
+                <div class="am-u-sm-12">
+                    <form class="am-form">
+                        <table class="am-table am-table-striped am-table-hover table-main">
+                            <thead>
+                            <tr>
+                                <th class="table-title">核销码</th>
+                                <th class="table-title">核销码描述</th>
+                                <th class="table-title">创建时间</th>
+                                <th class="table-title am-hide-sm-only">核销状态</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for obj in objs %}
+                                <tr>
+                                    <td>{{ obj.code }}</td>
+                                    <td><a href="#">{{ obj.description }}</a></td>
+                                    <td class="am-hide-sm-only">{{ obj.createTime }}</td>
+                                    {% if obj.codeStatus %}
+                                        <td class="am-hide-sm-only am-text-danger">已核销</td>
+                                    {% else %}
+                                        <td class="am-hide-sm-only am-text-primary">未核销</td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="am-cf">
+                            共 {{ number }} 条记录
+                            <div class="am-fr">
+                                <ul class="am-pagination">
+                                    <li onclick="up({{ pIndex }}, {{ num_page }}, {{ codeStatus }})"><a href="#">«</a>
+                                    </li>
+                                    {% for i in page_range %}
+                                        {% if pIndex|go_int == i %}
+                                            <li class="am-active"><a href="#">{{ i }}</a></li>
+                                        {% else %}
+                                            <li>
+                                                <a href="/hexiao/query?pIndex={{ i }}&codeStatus={{ codeStatus }}">{{ i }}</a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <li onclick="next({{ pIndex }}, {{ num_page }}, {{ codeStatus }})"><a href="#">»</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <hr/>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--翻页越界警告框-->
+    <div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">提示</div>
+            <div class="am-modal-bd">
+                已经是页码的尽头了，不能在翻了！
+            </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn">确定</span>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        // 选择查询
+        $('select').change(function () {
+            var a = $('select').val()
+            $(window).attr('location', '/hexiao/query?' + 'codeStatus=' + a + '&pIndex=1')
+        })
+        // 翻页处理
+        function next(pIndex, num_page, codeStatus) {
+            if (pIndex >= num_page) {
+                $('#my-alert').modal()
+            } else {
+                $(window).attr('location', '/hexiao/query?' + 'codeStatus=' + codeStatus + '&pIndex=' + (pIndex + 1))
+            }
+        }
+        function up(pIndex, num_page, codeStatus) {
+            if (pIndex <= 1) {
+                $('#my-alert').modal()
+            } else {
+                $(window).attr('location', '/hexiao/query?' + 'codeStatus=' + codeStatus + '&pIndex=' + (pIndex - 1))
+            }
+        }
+    </script>
+{% endblock %}
